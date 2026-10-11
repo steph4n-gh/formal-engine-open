@@ -1,57 +1,51 @@
-# Formal-Engine v2.0 (Open Research)
+# Formal-Engine (Open Research)
 
 ![Rust](https://img.shields.io/badge/Language-Rust-orange.svg)
 ![Z3](https://img.shields.io/badge/Engine-Microsoft_Z3-blue.svg)
 ![License](https://img.shields.io/badge/License-GPLv3-blue.svg)
 
-**Formal-Engine** is a research framework built to demonstrate the application of Satisfiability Modulo Theories (SMT) and formal methods to vulnerability discovery and cryptanalysis. 
+Formal-Engine contains Rust research demos of bounded SMT state solving and synthetic cryptographic constraints. The examples use generated inputs. They do not establish practical attacks against deployed AES or ML-KEM implementations or prove the correctness of arbitrary software.
 
-By treating computer science problems as algebraic constraints and leveraging solvers like Microsoft Z3, we can eliminate the $2^{160}$ search spaces that traditional fuzzers fail to penetrate.
+## Interactive demo
 
-> **Mission:** To transition cybersecurity from statistical guessing (fuzzing) to absolute mathematical certainty.
+The Rust example serves its own local web UI with `std::net::TcpListener`. Building it requires the crates in [Cargo.toml](Cargo.toml), including `z3`, and a system Z3 installation with headers. No separate web server or front-end package installation is needed.
 
-## 🚀 The Public Demo: Zero Dependencies
+### Visual demos
 
-The cybersecurity industry is plagued by tools that are impossible to install, requiring massive Docker containers and broken dependency chains. 
+#### 1. SMT pipeline
 
-This repository proves the math natively. **There are zero outside Rust dependencies required to run the interactive demo**—we rely entirely on the Rust standard library (e.g., `std::net::TcpListener`) and Microsoft's official Z3 C-bindings.
-
-### 🖼️ Visual Demos
-
-#### 1. The SMT Pipeline (Inversion & Armor Synthesis)
 ![Full Pipeline Sequence](assets/demo_full_pipeline.png)
-*Figure 1: Autonomous inversion of a state machine to find a collision, followed by the synthesis and formal certification of a Dual-Rail Semantic Guard.*
 
-#### 2. Cryptanalysis Hub (PQC & AES Breach)
+*Figure 1: A bounded state-machine inversion example followed by a guard check for the generated example.*
+
+#### 2. Cryptographic constraint examples
+
 ![Encryption Hub Results](assets/demo_encryption_hub.png)
-*Figure 2: Real-time recovery of AES-256 round keys via Differential Fault Analysis and extraction of ML-KEM secret coefficients from noisy lattices.*
 
-### Quick Start (macOS / Linux)
+*Figure 2: Synthetic AES S-box constraints for a 32-bit round-key component and a bounded lattice-coefficient example. These are demonstrations, not attacks on complete cryptographic implementations.*
 
-1. **Install Microsoft Z3:**
-   ```bash
-   # macOS
+### Quick start (macOS / Linux)
+
+1. Install a Rust toolchain and Microsoft Z3 with development headers. For example:
+
+   ```sh
+   # macOS with Homebrew
    brew install z3
-   export Z3_SYS_Z3_HEADER=/opt/homebrew/include/z3.h
-   export LIBRARY_PATH=/opt/homebrew/lib
+   export Z3_SYS_Z3_HEADER="$(brew --prefix z3)/include/z3.h"
+   export LIBRARY_PATH="$(brew --prefix z3)/lib"
 
    # Ubuntu/Debian
    sudo apt-get install libz3-dev
    ```
 
-2. **Run the Interactive Sandbox:**
-   ```bash
+2. From the repository root, build and run the interactive example:
+
+   ```sh
    cargo run --example dynamic_grail_demo
    ```
 
-Open your browser to `http://127.0.0.1:8080`. 
+Open `http://127.0.0.1:8080` in a browser. The demo lets you explore a bounded state-machine example and two synthetic cryptographic constraint examples.
 
-You will be presented with a **3-Step Pipeline** allowing you to build a bounded logic bomb, attempt to defeat it with a PRNG fuzzer, watch the SMT engine crack it algebraically in milliseconds, and download a forensic receipt of the execution. A second tab features the **Cryptanalysis Hub**, demonstrating real-time AES Fault Analysis (DFA) and Post-Quantum Lattice (ML-KEM) breaching.
+## Security and disclosure
 
-## 📚 Security & Disclosure
-
-This repository contains the mathematical proofs and the theoretical framework. The advanced, weaponized binary surgery modules (Autonomous ELF Expansion, PLT/GOT ASLR bypasses) are maintained privately in the Enterprise repository.
-
-- [**Security Policy**](SECURITY.md) - Guidelines on responsible disclosure and use.
-
-*Code is Math. Math is Absolute.*
+See the [security policy](SECURITY.md) for disclosure guidance.
