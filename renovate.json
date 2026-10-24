@@ -1,0 +1,22 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": ["config:recommended", ":approveMajorUpdates"],
+  "enabledManagers": ["cargo"],
+  "includePaths": ["Cargo.toml"],
+  "rangeStrategy": "replace",
+  "dependencyDashboard": true,
+  "automerge": false,
+  "prConcurrentLimit": 2,
+  "prHourlyLimit": 2,
+  "vulnerabilityAlerts": {
+    "automerge": false,
+    "prConcurrentLimit": 2
+  },
+  "packageRules": [
+    {
+      "description": "Review every Z3 update before Renovate opens a PR",
+      "matchPackageNames": ["z3"],
+      "dependencyDashboardApproval": true
+    }
+  ]
+}
