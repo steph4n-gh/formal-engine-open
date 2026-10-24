@@ -6,7 +6,7 @@ use std::time::{Duration, Instant};
 use std::thread;
 use z3::ast::{Ast, BV};
 use z3::{Config, Context, Solver, SatResult};
-use rand::Rng;
+use rand::RngExt;
 use formal_engine_open::pqc_solver::PqcLatticeCore;
 
 #[derive(Deserialize, Debug, Clone)]
@@ -628,12 +628,12 @@ fn run_real_fuzzer(payload: &Payload) -> FuzzResult {
         let pl = payload.clone();
         
         handles.push(thread::spawn(move || {
-            let mut rng = rand::thread_rng();
+            let mut rng = rand::rng();
             let start = Instant::now();
             let mut local_attempts = 0;
             
             while start.elapsed() < duration {
-                let p: [u32; 5] = [rng.gen(), rng.gen(), rng.gen(), rng.gen(), rng.gen()];
+                let p: [u32; 5] = [rng.random(), rng.random(), rng.random(), rng.random(), rng.random()];
                 let mut state = pl.initial_state;
                 
                 for packet in p {
